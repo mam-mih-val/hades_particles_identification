@@ -21,6 +21,7 @@ void AnalysisTask::Init(std::map<std::string, void *> &branch_map) {
   fields_id_.insert(std::make_pair(FIELDS::CENTRALITY, event_header_config.GetFieldId("selected_tof_rpc_hits_centrality")));
   fields_id_.insert(std::make_pair(FIELDS::PT2, event_header_config.GetFieldId("physical_trigger_2")));
   fields_id_.insert(std::make_pair(FIELDS::MASS_2, meta_hits_config.GetFieldId("mass2")));
+  fields_id_.insert(std::make_pair(FIELDS::CHARGE, mdc_vtx_tracks_config.GetFieldId("charge")));
 
   // initializing histograms
   centrality_distribution_ = new TH1F( "centrality_tof_rpc", ";centrality (%);counts", 20, 0.0, 100 );
@@ -43,21 +44,24 @@ void AnalysisTask::Exec() {
   if( !event_header_->GetField<bool>(fields_id_.at(FIELDS::PT2)) )
     return;
   auto centrality = event_header_->GetField<float>(fields_id_.at(FIELDS::CENTRALITY));
+  centrality_distribution_->Fill(centrality);
   int n_tracks = mdc_vtx_tracks_->GetNumberOfChannels(); // number of tracks in current event
   for (size_t i = 0; i < n_tracks; ++i) { // loop over all tracks if current event
     auto track = mdc_vtx_tracks_->GetChannel(i); // getting track from track detector
     auto hit = meta_hits_->GetChannel(i); // getting matched with track hit in TOF-system
     auto mass2 = hit.GetField<float>(fields_id_.at(FIELDS::MASS_2));
+    auto charge = track.GetField<int>(fields_id_.at(FIELDS::CHARGE));
     auto mom4 = track.Get4MomentumByMass( sqrtf(mass2) );
     try {
       mass2_vs_p_rapidity_centrality_.at(centrality)
-          ->Fill(mom4.Rapidity()-0.74, mom4.Pt(), mass2);
+          ->Fill(mom4.Rapidity()-0.74, mom4.Pt()/charge, mass2);
     } catch (std::out_of_range&) {}
   }
 }
 
 void AnalysisTask::Finish() {
   // Writing histograms to file
+  centrality_distribution_->Write();
   for(auto histo : mass2_vs_p_rapidity_centrality_){
     histo.second->Write();
   }

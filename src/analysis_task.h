@@ -27,6 +27,7 @@ private:
  enum class FIELDS { // enumerator to fast access to detectors' fields
     CENTRALITY,
     MASS_2,
+    CHARGE,
     PT2
   };
   std::map<FIELDS, int> fields_id_; // map to match detectors' fields with enumerator
