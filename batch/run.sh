@@ -8,7 +8,7 @@ ownroot=/lustre/nyx/hades/user/mmamaev/install/root-6.18.04/cxx17/bin/thisroot.s
 current_dir=$(pwd)
 partition=main
 time=8:00:00
-build_dir=/lustre/nyx/hades/user/mmamaev/hades_contaminations/build
+build_dir=/lustre/nyx/hades/user/mmamaev/hades_particle_identification/build
 
 lists_dir=${output_dir}/lists
 log_dir=${output_dir}/log
