@@ -31,3 +31,6 @@ link_directories(
 
 add_executable(identify src/analyse.cc src/analysis_task.cc)
 target_link_libraries(identify ${Boost_LIBRARIES} ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)
+
+add_executable(fit src/fit_mass2.cc)
+target_link_libraries(fit ${Boost_LIBRARIES} ${ROOT_LIBRARIES} AnalysisTreeBase AnalysisTreeInfra)

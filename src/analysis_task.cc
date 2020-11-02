@@ -34,7 +34,7 @@ void AnalysisTask::Init(std::map<std::string, void *> &branch_map) {
                                 ";y_{cm};p_{T}/z [GeV/c]; m^{2} [GeV^{2}/c^{4}]",
                                 150, -0.75, 0.75,
                                 250, -2.5, 2.5,
-                                550, -1.0, 10.0 ) )
+                                500, -3.0, 17.0 ) )
         );
     percentile+=5.0f;
   }
