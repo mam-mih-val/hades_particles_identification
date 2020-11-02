@@ -45,7 +45,7 @@ void AnalysisTask::Exec() {
     return;
   auto centrality = event_header_->GetField<float>(fields_id_.at(FIELDS::CENTRALITY));
   centrality_distribution_->Fill(centrality);
-  int n_tracks = mdc_vtx_tracks_->GetNumberOfChannels(); // number of tracks in current event
+  auto n_tracks = mdc_vtx_tracks_->GetNumberOfChannels(); // number of tracks in current event
   for (size_t i = 0; i < n_tracks; ++i) { // loop over all tracks if current event
     auto track = mdc_vtx_tracks_->GetChannel(i); // getting track from track detector
     auto hit = meta_hits_->GetChannel(i); // getting matched with track hit in TOF-system
